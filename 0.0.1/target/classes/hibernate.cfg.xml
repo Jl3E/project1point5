@@ -28,8 +28,8 @@
             momma
         </property>
 
-        <mapping class = "com.project1point5.service.User"/>
-        <mapping class = "com.project1point5.service.Reimbursement"/>
+        <mapping class = "com.project1point5.model.User"/>
+        <mapping class = "com.project1point5.model.Reimbursement"/>
 
     </session-factory>
 </hibernate-configuration>

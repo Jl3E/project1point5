@@ -3,9 +3,9 @@ package com.project1point5.model;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "SomethingElse")
 public class User {
-	@GeneratedValue
+
 	@Id
 	private int user_id;
 	private String username;
