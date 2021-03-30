@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        " http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <property name = "hibernate.dialect">
+            org.hibernate.dialect.PostgreSQL9Dialect
+        </property>
+
+        <property name = "hibernate.connection.driver_class">
+            org.postgresql.Driver
+        </property>
+
+        <property name="show_sql">true</property>
+
+        <property name = "hibernate.connection.url">
+            jdbc:postgresql://samplepsql.cd1hrpx24rhn.us-west-1.rds.amazonaws.com:5432/postgres?currentSchema=project1point5
+        </property>
+
+        <property name = "hibernate.connection.username">
+            joe
+        </property>
+
+        <property name = "hibernate.connection.password">
+            momma
+        </property>
+
+        <mapping class = "com.project1point5.service.User"/>
+        <mapping class = "com.project1point5.service.Reimbursement"/>
+
+    </session-factory>
+</hibernate-configuration>
