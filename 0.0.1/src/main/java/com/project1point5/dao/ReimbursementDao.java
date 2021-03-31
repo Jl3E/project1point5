@@ -21,6 +21,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 /*
  * Purpose of this Dao is to send/retrieve info about a reimbursement
@@ -30,7 +31,8 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 	private static final Logger LOGGER = Logger.getLogger(ReimbursementDao.class);
 	SessionFactory factory = new Configuration().configure().buildSessionFactory();
 	Session session = factory.openSession();
-	
+
+	@Deprecated
 	private Reimbursement objectConstructor(ResultSet rs) throws SQLException {
 		return new Reimbursement(rs.getInt(1), rs.getFloat(2), rs.getTimestamp(3), rs.getTimestamp(4),
 							rs.getString(5), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getInt(10));
@@ -38,71 +40,82 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 
 	@Override
 	public List<Reimbursement> getList() {
-		List<Reimbursement> l = new ArrayList<Reimbursement>();
-		
-		try (Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String qSql = "SELECT * FROM ers_reimbursement";
-			Statement s = c.createStatement();
-			ResultSet rs = s.executeQuery(qSql);
-			
-			while(rs.next()) {
-				l.add(objectConstructor(rs));
-			}
-			
-			rs.close();
-			s.closeOnCompletion();
-			LOGGER.debug("All reimbursements were retrieved from the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to get all reimbursements failed.");
-		}
+		Query query = session.createQuery("FROM Reimbursement");
+		List<Reimbursement> l = query.list();
+//		List<Reimbursement> l = new ArrayList<Reimbursement>();
+//
+//
+//		try (Connection c = ConnectionUtil.getInstance().getConnection()) {
+//			String qSql = "SELECT * FROM reimbursement";
+//			Statement s = c.createStatement();
+//			ResultSet rs = s.executeQuery(qSql);
+//
+//			while(rs.next()) {
+//				l.add(objectConstructor(rs));
+//			}
+//
+//			rs.close();
+//			s.closeOnCompletion();
+//			LOGGER.debug("All reimbursements were retrieved from the database.");
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			LOGGER.error("An attempt to get all reimbursements failed.");
+//		}
 		return l;
 	}
 
 	@Override
 	public Reimbursement getById(int id) {
-		Reimbursement r = null;
-		
-		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String qSql = "SELECT * FROM ers_reimbursement WHERE reimb_id = ?";
-			PreparedStatement ps = c.prepareStatement(qSql);
-			ps.setInt(1, id);
-			ResultSet rs = ps.executeQuery();
-			
-			if(rs.next())
-				r = objectConstructor(rs);
-			
-			rs.close();
-			ps.closeOnCompletion();
-			LOGGER.debug("A reimbursement by ID " + id + " was retrieved from the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to get a reimbursement by ID" + id + " from the database failed.");
-		}
-		return r;
+		String hql = "FROM Reimbursement R WHERE R.id = :reimbursementId";
+		List<Reimbursement> r = session.createQuery(hql)
+				.setParameter("reimbursementId", id)
+				.list();
+
+//		Reimbursement r = null;
+//		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
+//			String qSql = "SELECT * FROM ers_reimbursement WHERE reimb_id = ?";
+//			PreparedStatement ps = c.prepareStatement(qSql);
+//			ps.setInt(1, id);
+//			ResultSet rs = ps.executeQuery();
+//
+//			if(rs.next())
+//				r = objectConstructor(rs);
+//
+//			rs.close();
+//			ps.closeOnCompletion();
+//			LOGGER.debug("A reimbursement by ID " + id + " was retrieved from the database.");
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			LOGGER.error("An attempt to get a reimbursement by ID" + id + " from the database failed.");
+//		}
+		return r.get(0);
 	}
 	
 	@Override
 	public List<Reimbursement> getByUserId(int id) {
-		List<Reimbursement> l = new ArrayList<Reimbursement>();
-		
-		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String qSql = "SELECT * FROM ers_reimbursement WHERE reimb_author = ?";
-			PreparedStatement ps = c.prepareStatement(qSql);
-			ps.setInt(1, id);
-			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				l.add(objectConstructor(rs));
-			}
-			rs.close();
-			ps.closeOnCompletion();
-			LOGGER.debug("A list of reimbursements made by user ID " + id + " was retrieved from the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to get all reimbursements made by user ID " + id + " fron the database failed.");
-		}
-		System.out.println(l.toString());
+		String hql = "FROM Reimbursement R WHERE R.author = :author";
+		List<Reimbursement> l = session.createQuery(hql)
+				.setParameter("author", id)
+				.list();
+
+//		List<Reimbursement> l = new ArrayList<Reimbursement>();
+//		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
+//			String qSql = "SELECT * FROM ers_reimbursement WHERE reimb_author = ?";
+//			PreparedStatement ps = c.prepareStatement(qSql);
+//			ps.setInt(1, id);
+//			ResultSet rs = ps.executeQuery();
+//
+//			while(rs.next()) {
+//				l.add(objectConstructor(rs));
+//			}
+//			rs.close();
+//			ps.closeOnCompletion();
+//			LOGGER.debug("A list of reimbursements made by user ID " + id + " was retrieved from the database.");
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			LOGGER.error("An attempt to get all reimbursements made by user ID " + id + " fron the database failed.");
+//		}
+//		System.out.println(l.toString());
 		return l;
 	}
 	
