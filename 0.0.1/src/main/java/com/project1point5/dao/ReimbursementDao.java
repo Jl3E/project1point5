@@ -17,6 +17,10 @@ import org.apache.log4j.Logger;
 
 import com.project1point5.model.Reimbursement;
 import com.project1point5.util.ConnectionUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
 /*
  * Purpose of this Dao is to send/retrieve info about a reimbursement
@@ -24,6 +28,8 @@ import com.project1point5.util.ConnectionUtil;
  */
 public class ReimbursementDao implements GenericDao<Reimbursement> {
 	private static final Logger LOGGER = Logger.getLogger(ReimbursementDao.class);
+	SessionFactory factory = new Configuration().configure().buildSessionFactory();
+	Session session = factory.openSession();
 	
 	private Reimbursement objectConstructor(ResultSet rs) throws SQLException {
 		return new Reimbursement(rs.getInt(1), rs.getFloat(2), rs.getTimestamp(3), rs.getTimestamp(4),
@@ -107,25 +113,30 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 
 	@Override
 	public void insert(Reimbursement r) {
-		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String sql = "INSERT INTO ers_reimbursement(reimb_amount, reimb_submitted, reimb_description, "
-					   + "reimb_author, reimb_status_id, reimb_type_id) VALUES(?, ?, ?, ?, ?, ?)";
-			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setFloat(1, r.getAmount());
-			Calendar cal = Calendar.getInstance();
-			ps.setTimestamp(2, new Timestamp(cal.getTime().getTime()));
-			ps.setString(3, r.getDescription());
-			ps.setInt(4, r.getAuthor());
-			ps.setInt(5, r.getStatus_id());
-			ps.setInt(6, r.getType_id());
-			
-			ps.executeUpdate();
-			ps.closeOnCompletion();
-			LOGGER.debug("A new reimbursement was successfully added to the database.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.error("An attempt to insert a reimbursement to the database failed.");
-		}
+//		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
+//			String sql = "INSERT INTO ers_reimbursement(reimb_amount, reimb_submitted, reimb_description, "
+//					   + "reimb_author, reimb_status_id, reimb_type_id) VALUES(?, ?, ?, ?, ?, ?)";
+//			PreparedStatement ps = c.prepareStatement(sql);
+//			ps.setFloat(1, r.getAmount());
+//			Calendar cal = Calendar.getInstance();
+//			ps.setTimestamp(2, new Timestamp(cal.getTime().getTime()));
+//			ps.setString(3, r.getDescription());
+//			ps.setInt(4, r.getAuthor());
+//			ps.setInt(5, r.getStatus_id());
+//			ps.setInt(6, r.getType_id());
+//
+//			ps.executeUpdate();
+//			ps.closeOnCompletion();
+//			LOGGER.debug("A new reimbursement was successfully added to the database.");
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			LOGGER.error("An attempt to insert a reimbursement to the database failed.");
+//		}
+		Transaction t = session.beginTransaction();
+		session.persist(r);
+		session.flush();
+		t.commit();
+		session.close();
 	}
 	
 	public void updateList(int[][] i, int resolver) {

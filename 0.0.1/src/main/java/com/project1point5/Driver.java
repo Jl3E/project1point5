@@ -1,7 +1,9 @@
 package com.project1point5;
 
+import com.project1point5.dao.ReimbursementDao;
 import com.project1point5.model.Reimbursement;
 import com.project1point5.model.User;
+import com.project1point5.service.ReimbursementService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,12 +23,8 @@ public class Driver {
         Timestamp timestamp2 = new Timestamp(date.getTime());
         Reimbursement r = new Reimbursement(1,50, timestamp2,timestamp2,"something",1,1,1,1);
 
-        Transaction t = session.beginTransaction();
-        session.persist(r);
-        session.persist(u);
-        session.flush();
-        t.commit();
-        session.close();
+        ReimbursementDao rd = new ReimbursementDao();
+        rd.insert(r);
 
 
     }
