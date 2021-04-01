@@ -17,8 +17,8 @@ import java.util.List;
 public class Driver {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        Session session = factory.openSession();
+//        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+//        Session session = factory.openSession();
 
         User u = new User(1,"bob","bobPass","b","bob","bob@mail.com",1);
         User u1 = new User(2,"jill","jillPass","jill","hands","jill@mail.com",3);
@@ -31,7 +31,7 @@ public class Driver {
         ReimbursementDao rd = new ReimbursementDao();
 
 //        rd.insert(r);//works for inserting
-//        rd.insert(r2);
+        rd.insert(r2);
 //        rd.insert(r3);
 
 //        List<Reimbursement> name = rd.getList(); // gets a list of all reimbursements
