@@ -197,7 +197,11 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 	
 	@Override
 	public void delete(Reimbursement r) {
-		
+		Transaction tr = session.beginTransaction();
+		session.delete(r);
+		session.flush();
+		tr.commit();
+		session.close();
 	}
 	
 }

@@ -8,10 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/project1point5/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project1point5/Driver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/project1point5/dao/ReimbursementDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project1point5/dao/ReimbursementDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project1point5/util/ConnectionUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project1point5/util/ConnectionUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/project1point5/Driver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/project1point5/Driver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/project1point5/dao/ReimbursementDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/project1point5/dao/ReimbursementDao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/project1point5/util/ConnectionUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/project1point5/util/ConnectionUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project1point5/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project1point5/dao/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
