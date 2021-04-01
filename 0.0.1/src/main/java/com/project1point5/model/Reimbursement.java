@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 
 @Entity
-@Table
+@Table(name = "reimbursement")
 public class Reimbursement {
 	@Id
 	private int id;
