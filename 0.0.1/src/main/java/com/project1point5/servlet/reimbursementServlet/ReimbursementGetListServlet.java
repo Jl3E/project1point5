@@ -38,7 +38,9 @@ public class ReimbursementGetListServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        handle(req, resp);
+        PrintWriter out = resp.getWriter();
+        out.print("No use for doPost()");
+        out.flush();
     }
 
     @Override
