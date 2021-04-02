@@ -1,6 +1,5 @@
 package com.project1point5.servlet.reimbursementServlet;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.project1point5.model.Reimbursement;
 import com.project1point5.service.ReimbursementService;
@@ -13,21 +12,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
 
 /**
- * Used to retrieve reimbursement by id.
+ * Used to retrieve reimbursement by author.
  *      ID can be passed in url ex: http://localhost:8080/0.0.1/reimbursement/getById?id=4
  *      ID can be passed in body: Need help figuring out how to send id through body
  */
-@WebServlet("/reimbursement/getById")
-public class ReimbursementGetByIdServlet extends HttpServlet {
+@WebServlet("/reimbursement/getByUserId")
+public class ReimbursementGetByUserIdServlet extends HttpServlet {
 
     //Delete later. This is used because my DB is broken
 //    Date date = new Date();
 //    Timestamp timestamp2 = new Timestamp(date.getTime());
-//    Reimbursement reimbursement = new Reimbursement(1,50, timestamp2,timestamp2,"something",1,1,1,1);
+//    Reimbursement reimbursement1 = new Reimbursement(1,50, timestamp2,timestamp2,"something",1,1,1,1);
+//    Reimbursement reimbursement2 = new Reimbursement(2,50, timestamp2,timestamp2,"something",1,1,1,1);
+//    List<Reimbursement> reimbursements = new ArrayList<>();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -61,33 +63,35 @@ public class ReimbursementGetByIdServlet extends HttpServlet {
      */
     public void handleRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        String primaryID = "id";
+        String author = "author";
         PrintWriter out = resp.getWriter();
         resp.setContentType("application/json");
-        String primaryIdValue = req.getParameter(primaryID);
+        String authorValue = req.getParameter(author);
 
-        //return error if client does not provide an id
-        if(primaryIdValue == null){
-            out.write("Provide an 'id'");
+        //return error if client does not provide an author
+        if(authorValue == null){
+            out.write("Provide an 'author'");
             out.flush();
             return;
         }
 
-        //check that reimbursement id is an integer
-        if(isInteger(primaryIdValue)){
+        //check that reimbursement author is an integer
+        if(isInteger(authorValue)){
             //Call ReimbursementService to call dao and return the object
             ReimbursementService reimbursementService = new ReimbursementService();
-            Reimbursement reimbursement = reimbursementService.getReimbursementById(Integer.parseInt(primaryIdValue));
+            List<Reimbursement> reimbursements = reimbursementService.getReimbursementsByUserID(Integer.parseInt(authorValue));
+
+            //FOR JOSH'S REFERENCE. DELETE LATER
+//            reimbursements.add(reimbursement1);
+//            reimbursements.add(reimbursement2);
 
             //Print json of reimbursement to body
-            out.print(new GsonBuilder().setPrettyPrinting().create().toJson(reimbursement));
-            out.flush();
+            out.print(new GsonBuilder().setPrettyPrinting().create().toJson(reimbursements));
         }else{
-            out.write("'id' must be an integer");
-            out.flush();
+            out.write("'author' must be an integer");
         }
+        out.flush();
     }
-
 
     /**
      *  Check that parameter is an integer
