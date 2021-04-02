@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Used to retrieve reimbursement by author.
- *      ID can be passed in url ex: http://localhost:8080/0.0.1/reimbursement/getById?id=4
+ *      ID can be passed in url ex: http://localhost:8080/0.0.1/reimbursement/getByUserId?id=4
  *      ID can be passed in body: Need help figuring out how to send id through body
  */
 @WebServlet("/reimbursement/getByUserId")
