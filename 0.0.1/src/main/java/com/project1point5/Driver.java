@@ -31,8 +31,8 @@ public class Driver {
         ReimbursementDao rd = new ReimbursementDao();
 
 //        rd.insert(r);//works for inserting
-        rd.insert(r2);
-//        rd.insert(r3);
+//        rd.insert(r2);
+        rd.insert(r3);
 
 //        List<Reimbursement> name = rd.getList(); // gets a list of all reimbursements
 //        System.out.println(name.get(0).getAmount()); //prove of concept

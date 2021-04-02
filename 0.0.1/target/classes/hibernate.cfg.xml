@@ -17,15 +17,15 @@
         <property name="show_sql">true</property>
 
         <property name = "hibernate.connection.url">
-            jdbc:postgresql://samplepsql.cvit2io6ehiq.us-east-1.rds.amazonaws.com:5432/postgres?currentSchema=ElmbladSwanson
+            jdbc:postgresql://samplepsql.cd1hrpx24rhn.us-west-1.rds.amazonaws.com:5432/postgres?currentSchema=project1point5
         </property>
 
         <property name = "hibernate.connection.username">
-            swansonj
+            joe
         </property>
 
         <property name = "hibernate.connection.password">
-            Orderedjoker615!
+            momma
         </property>
 
         <mapping class = "com.project1point5.model.User"/>
