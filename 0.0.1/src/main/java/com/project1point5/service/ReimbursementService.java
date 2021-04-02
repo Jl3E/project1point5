@@ -30,7 +30,11 @@ public class ReimbursementService {
 	public List<Reimbursement> fetchAllReimbursements() {
 		return rd.getList();
 	}
-	
+
+	public Reimbursement getReimbursementById(int id){
+		return rd.getById(id);
+	}
+
 	public List<Reimbursement> getReimbursementsByUserID(int id) {
 		return rd.getByUserId(id);
 	}
