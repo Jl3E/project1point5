@@ -25,9 +25,9 @@ public class Driver {
         User u2 = new User(3,"bill","billPass","bill","grands","bill@mail.com",2);
         Date date = new Date();
         Timestamp timestamp2 = new Timestamp(date.getTime());
-        Reimbursement r = new Reimbursement(1,50, timestamp2,null,"something",1,null,0,1);
-        Reimbursement r2 = new Reimbursement(2,50, timestamp2,null,"something",2,null,0,1);
-        Reimbursement r3 = new Reimbursement(3,518911, timestamp2,null,"the dudes rich",15,null,0,1);
+        Reimbursement r = new Reimbursement(1,50, timestamp2,null,"something",1,u,0,1);
+        Reimbursement r2 = new Reimbursement(2,50, timestamp2,null,"something",2,u,0,1);
+        Reimbursement r3 = new Reimbursement(3,518911, timestamp2,null,"the dudes rich",15,u,0,1);
 
         ReimbursementDao rd = new ReimbursementDao();
         UserDao us = new UserDao();// have to add theses first
