@@ -3,7 +3,7 @@ package com.project1point5.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
 
 	@Id
@@ -14,13 +14,13 @@ public class User {
 	private String lastname;
 	private String email;
 	private int role_id;
-	
+
 	public User() {
 		//No-arg constructor
 	}
 
 	public User( String username, String password, String firstname, String lastname, String email,
-				int role_id) {
+				 int role_id) {
 		this.username = username;
 		this.password = password;
 		this.firstname = firstname;
@@ -28,9 +28,9 @@ public class User {
 		this.email = email;
 		this.role_id = role_id;
 	}
-	
+
 	public User(int user_id, String username, String password, String firstname, String lastname, String email,
-			int role_id) {
+				int role_id) {
 		this.user_id = user_id;
 		this.username = username;
 		this.password = password;

@@ -11,19 +11,21 @@ public class Reimbursement {
 	private int id;
 	private float amount;
 	private Timestamp submitted;
-	private Timestamp resolved;
+	private Timestamp resolved;//updated with status_id
 	private String description;
 	private int author;
-	private int resolver;
-	private int status_id;
+	@OneToOne
+	@JoinColumn(name = "resolver")
+	private User resolver;
+	private int status_id;//0 pending, 1 accepted, 2 denied
 	private int type_id;
-	
+
 	public Reimbursement() {
 		//No-arg constructor
 	}
 
 	public Reimbursement( float amount, Timestamp submitted, Timestamp resolved, String description, int author,
-						 int resolver, int status_id, int type_id) {
+						  User resolver, int status_id, int type_id) {
 		this.amount = amount;
 		this.submitted = submitted;
 		this.resolved = resolved;
@@ -33,9 +35,9 @@ public class Reimbursement {
 		this.status_id = status_id;
 		this.type_id = type_id;
 	}
-	
+
 	public Reimbursement(int id, float amount, Timestamp submitted, Timestamp resolved, String description, int author,
-			int resolver, int status_id, int type_id) {
+						 User resolver, int status_id, int type_id) {
 		this.id = id;
 		this.amount = amount;
 		this.submitted = submitted;
@@ -95,11 +97,11 @@ public class Reimbursement {
 		this.author = author;
 	}
 
-	public int getResolver() {
+	public User getResolver() {
 		return resolver;
 	}
 
-	public void setResolver(int resolver) {
+	public void setResolver(User resolver) {
 		this.resolver = resolver;
 	}
 
@@ -128,7 +130,7 @@ public class Reimbursement {
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((resolved == null) ? 0 : resolved.hashCode());
-		result = prime * result + resolver;
+		result = prime * result + resolver.getUser_id();
 		result = prime * result + status_id;
 		result = prime * result + ((submitted == null) ? 0 : submitted.hashCode());
 		result = prime * result + type_id;
@@ -177,7 +179,7 @@ public class Reimbursement {
 	@Override
 	public String toString() {
 		return "Reimbursement [id=" + id + ", amount=" + amount + ", submitted=" + submitted + ", resolved=" + resolved
-				+ ", description=" + description + ", author=" + author + ", resolver=" + resolver + ", status_id="
+				+ ", description=" + description + ", author=" + author + ", resolver=" + resolver.getUser_id() + ", status_id="
 				+ status_id + ", type_id=" + type_id + "]";
 	}
 }

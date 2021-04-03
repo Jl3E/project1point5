@@ -30,9 +30,9 @@ public class UserDao implements GenericDao <User> {
 
 	private User objectConstructor(ResultSet rs) throws SQLException {
 		return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-						rs.getString(6), rs.getInt(7));
+				rs.getString(6), rs.getInt(7));
 	}
-	
+
 	@Override
 	public List<User> getList() {
 		Query query = session.createQuery("FROM User");
@@ -57,9 +57,9 @@ public class UserDao implements GenericDao <User> {
 
 	@Override
 	public User getById(int id) {
-		String hql = "FROM User u WHERE u.role_id = :id";
+		String hql = "FROM User u WHERE u.id = :userId";
 		List<User> u = session.createQuery(hql)
-				.setParameter("id", id)
+				.setParameter("userId", id)
 				.list();
 //		User u = null;
 //
@@ -79,17 +79,17 @@ public class UserDao implements GenericDao <User> {
 //		}
 		return u.get(0);
 	}
-	
+
 	@Override
 	public List<User> getByUserId(int id) {
 		// TODO Auto-generated method stub
-		String hql = "FROM User u WHERE u.id = :userId";
+		String hql = "FROM User u WHERE u.role_id = :id";
 		List<User> u = session.createQuery(hql)
-				.setParameter("userId", id)
+				.setParameter("id", id)
 				.list();
 		return u;
 	}
-	
+
 	@Override
 	public User getByUsername(String username) {
 		String hql = "FROM User u WHERE u.username = :username";

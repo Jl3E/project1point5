@@ -8,11 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
+import com.project1point5.model.User;
 import org.apache.log4j.Logger;
 
 import com.project1point5.model.Reimbursement;
@@ -32,11 +30,11 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 	SessionFactory factory = new Configuration().configure().buildSessionFactory();
 	Session session = factory.openSession();
 
-	@Deprecated
-	private Reimbursement objectConstructor(ResultSet rs) throws SQLException {
-		return new Reimbursement(rs.getInt(1), rs.getFloat(2), rs.getTimestamp(3), rs.getTimestamp(4),
-							rs.getString(5), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getInt(10));
-	}
+//	@Deprecated
+//	private Reimbursement objectConstructor(ResultSet rs) throws SQLException {
+//		return new Reimbursement(rs.getInt(1), rs.getFloat(2), rs.getTimestamp(3), rs.getTimestamp(4),
+//							rs.getString(5), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getInt(10));
+//	}
 
 	@Override
 	public List<Reimbursement> getList() {
@@ -90,7 +88,7 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 //		}
 		return r.get(0);
 	}
-	
+
 	@Override
 	public List<Reimbursement> getByUserId(int id) {
 		String hql = "FROM Reimbursement R WHERE R.author = :author";
@@ -118,7 +116,7 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 //		System.out.println(l.toString());
 		return l;
 	}
-	
+
 	public Reimbursement getByUsername(String username) {
 		//Empty. Reason - No use.
 		return null;
@@ -149,52 +147,85 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		session.persist(r);
 		session.flush();
 		t.commit();
-		session.close();
+//		session.close();
 	}
-	
-	public void updateList(int[][] i, int resolver) {
-		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
-			String aSql = "SELECT acceptarray(?, ?)";
-			String dSql = "SELECT denyarray(?, ?)";
-			
-			//Convert both of our int arrays to an Integer object
-			Integer[] a = Arrays.stream(i[0]).boxed().toArray(Integer[]::new);
-			Integer[] d = Arrays.stream(i[1]).boxed().toArray(Integer[]::new);
-			
-			//Convert both of our Integer arrays into something useful for SQL.
-			Array aArray = c.createArrayOf("INTEGER", a);
-			Array dArray = c.createArrayOf("INTEGER", d);
-			
-			//Perform our SQL calls
-			CallableStatement cs = c.prepareCall(aSql);
-			cs.setArray(1, aArray);
-			cs.setInt(2, resolver);
-			cs.execute();
-			cs.closeOnCompletion();
-			
-			cs = c.prepareCall(dSql);
-			cs.setArray(1, dArray);
-			cs.setInt(2, resolver);
-			cs.execute();
-			cs.closeOnCompletion();
-			
-			//This section is just for the sake of logging.
-			int totalCount = 0;
-			for(int co = 0; co < a.length; co++) {
-				if (a[co] != -1) {
-					totalCount++;
-				}
-				if (d[co] != -1) {
-					totalCount++;
-				}
-			}
-			LOGGER.debug(totalCount + " reimbursement" + ((totalCount != 1) ? "s" : "") + " modified by user ID " + resolver + ".");
-		} catch (SQLException e) {
-			LOGGER.error("An attempt to accept/deny reimbursements by user ID " + resolver + " from the database failed.");
-			e.printStackTrace();
+
+	public void updateList(int[][] i, int resolver) {//two people one that is the resolver one that is trying to get a reimb
+		Date date = new Date();
+		Transaction t = session.beginTransaction();
+		Timestamp resolvedTimeStamp = new Timestamp(date.getTime());
+		UserDao ud = new UserDao();
+		User reimburses = ud.getById(resolver);
+		Integer[] a = Arrays.stream(i[0]).boxed().toArray(Integer[]::new);
+		Integer[] d = Arrays.stream(i[1]).boxed().toArray(Integer[]::new);
+		for(Integer value: a){
+			Reimbursement reimbursement = getById(value);
+			session.evict(reimbursement);
+			reimbursement.setResolved(resolvedTimeStamp);
+			reimbursement.setStatus_id(1);
+			reimbursement.setResolver(reimburses);
+
+			Reimbursement mergedReimbursement = (Reimbursement) session.merge(reimbursement);
 		}
+		for(Integer value: d){
+			Reimbursement reimbursement = getById(value);
+			session.evict(reimbursement);
+			reimbursement.setResolved(resolvedTimeStamp);
+			reimbursement.setStatus_id(2);
+			reimbursement.setResolver(reimburses);
+
+			Reimbursement mergedReimbursement = (Reimbursement) session.merge(reimbursement);
+		}
+		session.flush();
+		t.commit();
+		session.close();
+		//Convert both of our Integer arrays into something useful for SQL.
+
+
+
+
+//		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
+//			String aSql = "SELECT acceptarray(?, ?)";
+//			String dSql = "SELECT denyarray(?, ?)";
+//
+//			//Convert both of our int arrays to an Integer object
+//			Integer[] a = Arrays.stream(i[0]).boxed().toArray(Integer[]::new);
+//			Integer[] d = Arrays.stream(i[1]).boxed().toArray(Integer[]::new);
+//
+//			//Convert both of our Integer arrays into something useful for SQL.
+//			Array aArray = c.createArrayOf("INTEGER", a);
+//			Array dArray = c.createArrayOf("INTEGER", d);
+//
+//			//Perform our SQL calls
+//			CallableStatement cs = c.prepareCall(aSql);
+//			cs.setArray(1, aArray);
+//			cs.setInt(2, resolver);
+//			cs.execute();
+//			cs.closeOnCompletion();
+//
+//			cs = c.prepareCall(dSql);
+//			cs.setArray(1, dArray);
+//			cs.setInt(2, resolver);
+//			cs.execute();
+//			cs.closeOnCompletion();
+//
+//			//This section is just for the sake of logging.
+//			int totalCount = 0;
+//			for(int co = 0; co < a.length; co++) {
+//				if (a[co] != -1) {
+//					totalCount++;
+//				}
+//				if (d[co] != -1) {
+//					totalCount++;
+//				}
+//			}
+//			LOGGER.debug(totalCount + " reimbursement" + ((totalCount != 1) ? "s" : "") + " modified by user ID " + resolver + ".");
+//		} catch (SQLException e) {
+//			LOGGER.error("An attempt to accept/deny reimbursements by user ID " + resolver + " from the database failed.");
+//			e.printStackTrace();
+//		}
 	}
-	
+
 	@Override
 	public void delete(Reimbursement r) {
 		Transaction tr = session.beginTransaction();
@@ -203,5 +234,5 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		tr.commit();
 		session.close();
 	}
-	
+
 }
