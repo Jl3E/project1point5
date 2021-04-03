@@ -26,6 +26,10 @@ public class ReimbursementService {
 			e.printStackTrace();
 		}
 	}
+
+	public void createReimbursement(Reimbursement r){
+		rd.insert(r);
+	}
 	
 	public List<Reimbursement> fetchAllReimbursements() {
 		return rd.getList();
