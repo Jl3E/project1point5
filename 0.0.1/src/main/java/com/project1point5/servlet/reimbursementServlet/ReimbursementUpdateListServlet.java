@@ -41,14 +41,14 @@ public class ReimbursementUpdateListServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
-        out.print("No use for doPut()");
-        out.flush();
+        insert(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        insert(req, resp);
+        PrintWriter out = resp.getWriter();
+        out.print("No use for doPost()");
+        out.flush();
     }
 
     @Override
