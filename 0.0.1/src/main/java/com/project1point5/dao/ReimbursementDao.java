@@ -64,10 +64,17 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 
 	@Override
 	public Reimbursement getById(int id) {
-		String hql = "FROM Reimbursement R WHERE R.id = :reimbursementId";
-		List<Reimbursement> r = session.createQuery(hql)
-				.setParameter("reimbursementId", id)
-				.list();
+
+		try{
+			String hql = "FROM Reimbursement R WHERE R.id = :reimbursementId";
+			List<Reimbursement> r = session.createQuery(hql)
+					.setParameter("reimbursementId", id)
+					.list();
+
+			return r.get(0);
+		}catch(Exception e){
+			return null;
+		}
 
 //		Reimbursement r = null;
 //		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
@@ -86,7 +93,6 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 //			e.printStackTrace();
 //			LOGGER.error("An attempt to get a reimbursement by ID" + id + " from the database failed.");
 //		}
-		return r.get(0);
 	}
 
 	@Override
