@@ -1,7 +1,9 @@
 package com.project1point5.servlet.reimbursementServlet;
 
 import com.project1point5.dao.ReimbursementDao;
+import com.project1point5.dao.UserDao;
 import com.project1point5.model.Reimbursement;
+import com.project1point5.model.User;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -99,18 +101,22 @@ public class ReimbursementDeleteServlet extends HttpServlet {
     public Reimbursement getReimbursementFromJsonString(StringBuilder jsonBuffer){
         JSONObject jsonObject = new JSONObject(jsonBuffer.toString());
         int id = jsonObject.getJSONObject("reimbursement").getInt("id");
-        float amount = jsonObject.getJSONObject("reimbursement").getFloat("amount");
-        String s = jsonObject.getJSONObject("reimbursement").getString("submitted");
-        String r = jsonObject.getJSONObject("reimbursement").getString("resolved");
-        String description = jsonObject.getJSONObject("reimbursement").getString("description");
-        int author = jsonObject.getJSONObject("reimbursement").getInt("author");
-        int resolver = jsonObject.getJSONObject("reimbursement").getInt("resolver");
-        int status_id = jsonObject.getJSONObject("reimbursement").getInt("status_id");
-        int type_id = jsonObject.getJSONObject("reimbursement").getInt("type_id");
-        Timestamp submitted = Timestamp.valueOf(s);
-        Timestamp resolved = Timestamp.valueOf(r);
+//        float amount = jsonObject.getJSONObject("reimbursement").getFloat("amount");
+//        String s = jsonObject.getJSONObject("reimbursement").getString("submitted");
+//        String r = jsonObject.getJSONObject("reimbursement").getString("resolved");
+//        String description = jsonObject.getJSONObject("reimbursement").getString("description");
+//        int author = jsonObject.getJSONObject("reimbursement").getInt("author");
+//        int resolver = jsonObject.getJSONObject("reimbursement").getInt("resolver");
+//        int status_id = jsonObject.getJSONObject("reimbursement").getInt("status_id");
+//        int type_id = jsonObject.getJSONObject("reimbursement").getInt("type_id");
+//        Timestamp submitted = Timestamp.valueOf(s);
+//        Timestamp resolved = Timestamp.valueOf(r);
+//
+//        UserDao userDao = new UserDao();
+//        return new Reimbursement(id, amount, submitted, resolved, description, author, userDao.getById(resolver), status_id, type_id);
 
-        return new Reimbursement(id, amount, submitted, resolved, description, author, resolver, status_id, type_id);
+        ReimbursementDao reimbursementDao = new ReimbursementDao();
+        return reimbursementDao.getById(id);
     }
 
 }

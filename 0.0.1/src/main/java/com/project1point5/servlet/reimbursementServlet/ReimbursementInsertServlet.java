@@ -1,5 +1,6 @@
 package com.project1point5.servlet.reimbursementServlet;
 
+import com.project1point5.dao.UserDao;
 import com.project1point5.model.Reimbursement;
 import com.project1point5.service.ReimbursementService;
 import org.json.JSONObject;
@@ -115,6 +116,9 @@ public class ReimbursementInsertServlet extends HttpServlet {
         Timestamp submitted = Timestamp.valueOf(s);
         Timestamp resolved = Timestamp.valueOf(r);
 
-        return new Reimbursement(id, amount, submitted, resolved, description, author, resolver, status_id, type_id);
+        UserDao userDao = new UserDao();
+        userDao.getById(resolver);
+
+        return new Reimbursement(id, amount, submitted, resolved, description, author, userDao.getById(resolver), status_id, type_id);
     }
 }

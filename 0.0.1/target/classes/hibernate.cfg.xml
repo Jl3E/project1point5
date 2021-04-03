@@ -21,11 +21,9 @@
         </property>
 
         <property name = "hibernate.connection.username">
-            swansonj
         </property>
 
         <property name = "hibernate.connection.password">
-            Orderedjoker615!
         </property>
 
         <mapping class = "com.project1point5.model.User"/>
