@@ -70,4 +70,8 @@ public class UserService {
 		
 		return null;
 	}
+
+	public void insert(User user){
+		ud.insert(user);
+	}
 }
