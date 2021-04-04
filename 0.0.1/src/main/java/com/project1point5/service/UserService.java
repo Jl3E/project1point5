@@ -25,6 +25,10 @@ public class UserService {
 	public User getUserById(int id) {
 		return ud.getById(id);
 	}
+
+	public List<User> getByUserId(int id){
+		return ud.getByUserId(id);
+	}
 	
 	public User getUserByUsername(String username) {
 		User u = ud.getByUsername(username);
