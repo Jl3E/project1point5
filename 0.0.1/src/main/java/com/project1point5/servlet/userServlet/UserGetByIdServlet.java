@@ -3,6 +3,7 @@ package com.project1point5.servlet.userServlet;
 import com.google.gson.GsonBuilder;
 import com.project1point5.model.User;
 import com.project1point5.service.UserService;
+import com.project1point5.util.HideUsernameAndPassword;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -63,6 +64,11 @@ public class UserGetByIdServlet extends HttpServlet {
         if(isInteger(primaryIdValue)){
             UserService userService = new UserService();
             User user = userService.getUserById(Integer.parseInt(primaryIdValue));
+
+            if(user != null){
+                HideUsernameAndPassword.hideDetails(user);
+            }
+
             out.print(new GsonBuilder().setPrettyPrinting().create().toJson(user));
         }else{
             out.write("'id' must be an integer");

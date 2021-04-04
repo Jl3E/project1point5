@@ -65,7 +65,9 @@ public class UserGetByUsernameServlet extends HttpServlet {
         UserService userService = new UserService();
         User user = userService.getUserByUsername(usernameValue);
 
-        HideUsernameAndPassword.hideDetails(user);
+        if(user != null) {
+            HideUsernameAndPassword.hideDetails(user);
+        }
 
         //Print json of user to body
         out.print(new GsonBuilder().setPrettyPrinting().create().toJson(user));

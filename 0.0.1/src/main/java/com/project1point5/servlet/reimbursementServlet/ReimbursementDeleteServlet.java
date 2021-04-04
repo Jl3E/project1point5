@@ -1,9 +1,7 @@
 package com.project1point5.servlet.reimbursementServlet;
 
 import com.project1point5.dao.ReimbursementDao;
-import com.project1point5.dao.UserDao;
 import com.project1point5.model.Reimbursement;
-import com.project1point5.model.User;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
 
 /**
  * Deletes reimbursement from DB using HTTP Delete
@@ -23,14 +20,6 @@ import java.sql.Timestamp;
  * {
  * "reimbursement": {
  * "id": 1,
- * "amount": 50,
- * "submitted": "2021-04-02 17:56:11.739",
- * "resolved": "2021-04-02 17:56:11.739",
- * "description": "something",
- * "author": 1,
- * "resolver": 1,
- * "status_id": 1,
- * "type_id": 1
  * }
  * }
  */

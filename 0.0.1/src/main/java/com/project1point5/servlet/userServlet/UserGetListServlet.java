@@ -54,8 +54,11 @@ public class UserGetListServlet extends HttpServlet {
 
         //Change username and password for security purposes
         List<User> users = userService.fetchAllUsers();
-        for(User user : users){
-            HideUsernameAndPassword.hideDetails(user);
+
+        if(users != null) {
+            for (User user : users) {
+                HideUsernameAndPassword.hideDetails(user);
+            }
         }
 
         out.print(new GsonBuilder().setPrettyPrinting().create().toJson(users));

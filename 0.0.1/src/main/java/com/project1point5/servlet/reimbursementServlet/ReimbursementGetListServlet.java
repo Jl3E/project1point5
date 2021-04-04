@@ -69,9 +69,11 @@ public class ReimbursementGetListServlet extends HttpServlet {
         ReimbursementService reimbursementService = new ReimbursementService();
         List<Reimbursement> reimbursements = reimbursementService.fetchAllReimbursements();
 
-        //Hide username and password
-        for(Reimbursement reimbursement : reimbursements){
-            HideUsernameAndPassword.hideDetails(reimbursement.getResolver());
+        if(reimbursements != null) {
+            //Hide username and password
+            for (Reimbursement reimbursement : reimbursements) {
+                HideUsernameAndPassword.hideDetails(reimbursement.getResolver());
+            }
         }
 
         out.print(new GsonBuilder().setPrettyPrinting().create().toJson(reimbursements));

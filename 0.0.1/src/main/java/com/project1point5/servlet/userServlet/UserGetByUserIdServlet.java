@@ -67,9 +67,11 @@ public class UserGetByUserIdServlet extends HttpServlet{
             UserService userService = new UserService();
             List<User> users = userService.getByUserId(Integer.parseInt(roleIdValue));
 
-            //Hide username and password of users
-            for(User user : users){
-                HideUsernameAndPassword.hideDetails(user);
+            if(users != null) {
+                //Hide username and password of users
+                for (User user : users) {
+                    HideUsernameAndPassword.hideDetails(user);
+                }
             }
 
             //Print json of users to body

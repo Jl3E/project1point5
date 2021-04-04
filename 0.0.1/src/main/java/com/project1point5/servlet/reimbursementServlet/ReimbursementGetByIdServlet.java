@@ -82,8 +82,10 @@ public class ReimbursementGetByIdServlet extends HttpServlet {
             ReimbursementService reimbursementService = new ReimbursementService();
             Reimbursement reimbursement = reimbursementService.getReimbursementById(Integer.parseInt(primaryIdValue));
 
-            //Hiding username and password
-            HideUsernameAndPassword.hideDetails(reimbursement.getResolver());
+            if(reimbursement != null) {
+                //Hiding username and password
+                HideUsernameAndPassword.hideDetails(reimbursement.getResolver());
+            }
 
             //Print json of reimbursement to body
             out.print(new GsonBuilder().setPrettyPrinting().create().toJson(reimbursement));
