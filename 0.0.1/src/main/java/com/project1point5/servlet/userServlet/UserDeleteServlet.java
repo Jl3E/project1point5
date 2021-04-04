@@ -85,8 +85,8 @@ public class UserDeleteServlet extends HttpServlet {
         UserService userService = new UserService();
 
         //NEED TO IMPLEMENT GETUSERBYLOGIN
-//        return userService.getUserByLogin(username, password);
+        return userService.getUserByLogin(username, password);
 
-        return userService.getUserById(id);
+//        return userService.getUserById(id);
     }
 }
