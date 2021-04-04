@@ -38,8 +38,14 @@ public class UserDao implements GenericDao <User> {
 
 	@Override
 	public List<User> getList() {
-		Query query = session.createQuery("FROM User");
-		List<User> l = query.list();
+		try{
+			Query query = session.createQuery("FROM User");
+			List<User> l = query.list();
+			return l;
+		} catch(Exception e){
+			return null;
+		}
+
 //		List<User> l = new ArrayList<User>();
 //
 //		try (Connection c = ConnectionUtil.getInstance().getConnection()) {
@@ -55,15 +61,20 @@ public class UserDao implements GenericDao <User> {
 //			e.printStackTrace();
 //			LOGGER.error("An attempt to get all users from the database failed.");
 //		}
-		return l;
 	}
 
 	@Override
 	public User getById(int id) {
-		String hql = "FROM User u WHERE u.id = :userId";
-		List<User> u = session.createQuery(hql)
-				.setParameter("userId", id)
-				.list();
+		try{
+			String hql = "FROM User u WHERE u.id = :userId";
+			List<User> u = session.createQuery(hql)
+					.setParameter("userId", id)
+					.list();
+			return u.get(0);
+		} catch(Exception e){
+			return null;
+		}
+
 //		User u = null;
 //
 //		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
@@ -80,25 +91,34 @@ public class UserDao implements GenericDao <User> {
 //			e.printStackTrace();
 //			LOGGER.error("An attempt to get info about user ID " + id + " from the database failed.");
 //		}
-		return u.get(0);
 	}
 
 	@Override
 	public List<User> getByUserId(int id) {
 		// TODO Auto-generated method stub
-		String hql = "FROM User u WHERE u.role_id = :id";
-		List<User> u = session.createQuery(hql)
-				.setParameter("id", id)
-				.list();
-		return u;
+		try{
+			String hql = "FROM User u WHERE u.role_id = :id";
+			List<User> u = session.createQuery(hql)
+					.setParameter("id", id)
+					.list();
+			return u;
+		} catch(Exception e){
+			return null;
+		}
+
 	}
 
 	@Override
 	public User getByUsername(String username) {
-		String hql = "FROM User u WHERE u.username = :username";
-		List<User> u = session.createQuery(hql)
-				.setParameter("username", username)
-				.list();
+		try{
+			String hql = "FROM User u WHERE u.username = :username";
+			List<User> u = session.createQuery(hql)
+					.setParameter("username", username)
+					.list();
+			return u.get(0);
+		}catch(Exception e){
+			return null;
+		}
 
 //		User u = null;
 //
@@ -118,40 +138,49 @@ public class UserDao implements GenericDao <User> {
 //			e.printStackTrace();
 //			LOGGER.error("An attempt to get info about username " + username + " from the database failed.");
 //		}
-		return u.get(0);
 	}
 
 	@Override
 	public void insert(User t) throws NoSuchAlgorithmException {
-		User user = t;
-		String pass = user.getPassword();
-		String full = user.getUsername() + pass + "salt";
-		//Let MessageDigest know that we want to hash using MD5
-		MessageDigest m = MessageDigest.getInstance("md5");
-		//Convert our full string to a byte array.
-		byte[] messageDigest = m.digest(full.getBytes());
-		//Convert our byte array into a signum representation of its former self.
-		BigInteger n = new BigInteger(1, messageDigest);
-		//Convert the whole array into a hexadecimal string.
-		String hash = n.toString(16);
-		while(hash.length() < 32) {
-			hash = "0" + hash;
+		try{
+			User user = t;
+			String pass = user.getPassword();
+			String full = user.getUsername() + pass + "salt";
+			//Let MessageDigest know that we want to hash using MD5
+			MessageDigest m = MessageDigest.getInstance("md5");
+			//Convert our full string to a byte array.
+			byte[] messageDigest = m.digest(full.getBytes());
+			//Convert our byte array into a signum representation of its former self.
+			BigInteger n = new BigInteger(1, messageDigest);
+			//Convert the whole array into a hexadecimal string.
+			String hash = n.toString(16);
+			while(hash.length() < 32) {
+				hash = "0" + hash;
+			}
+			user.setPassword(hash);//hashing the password
+			Transaction tr = session.beginTransaction();
+			session.persist(user);
+			session.flush();
+			tr.commit();
+			session.close();
+		} catch(Exception e){
+
 		}
-		user.setPassword(hash);//hashing the password
-		Transaction tr = session.beginTransaction();
-		session.persist(user);
-		session.flush();
-		tr.commit();
-		session.close();
+
 	}
 
 	@Override
 	public void delete(User t) {
 		// TODO Auto-generated method stub
-		Transaction tr = session.beginTransaction();
-		session.delete(t);
-		session.flush();
-		tr.commit();
-		session.close();
+		try{
+			Transaction tr = session.beginTransaction();
+			session.delete(t);
+			session.flush();
+			tr.commit();
+			session.close();
+		} catch(Exception e){
+			
+		}
+
 	}
 }

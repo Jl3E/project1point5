@@ -11,6 +11,7 @@ com\project1point5\servlet\userServlet\UserGetByIdServlet.class
 com\project1point5\servlet\reimbursementServlet\ReimbursementUpdateListServlet.class
 com\project1point5\dao\ReimbursementDao.class
 com\project1point5\model\User.class
+com\project1point5\util\HideUsernameAndPassword.class
 com\project1point5\Driver.class
 com\project1point5\servlet\reimbursementServlet\ReimbursementDeleteServlet.class
 com\project1point5\util\ConnectionUtil.class
