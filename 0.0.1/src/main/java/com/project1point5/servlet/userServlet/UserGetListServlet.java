@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Used to retrieve all users
+ */
 @WebServlet("/user/getList")
 public class UserGetListServlet extends HttpServlet {
 

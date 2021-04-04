@@ -3,6 +3,7 @@ package com.project1point5.servlet.reimbursementServlet;
 import com.google.gson.GsonBuilder;
 import com.project1point5.model.Reimbursement;
 import com.project1point5.service.ReimbursementService;
+import com.project1point5.util.HideUsernameAndPassword;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -66,12 +67,14 @@ public class ReimbursementGetListServlet extends HttpServlet {
     public void handle(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
         ReimbursementService reimbursementService = new ReimbursementService();
-        out.print(new GsonBuilder().setPrettyPrinting().create().toJson(reimbursementService.fetchAllReimbursements()));
+        List<Reimbursement> reimbursements = reimbursementService.fetchAllReimbursements();
 
-        //FOR MY REFERENCE. DELETE LATER
-//        reimbursements.add(reimbursement1);
-//        reimbursements.add(reimbursement2);
-//        out.print(new GsonBuilder().setPrettyPrinting().create().toJson(reimbursements));
+        //Hide username and password
+        for(Reimbursement reimbursement : reimbursements){
+            HideUsernameAndPassword.hideDetails(reimbursement.getResolver());
+        }
+
+        out.print(new GsonBuilder().setPrettyPrinting().create().toJson(reimbursements));
 
         out.flush();
     }

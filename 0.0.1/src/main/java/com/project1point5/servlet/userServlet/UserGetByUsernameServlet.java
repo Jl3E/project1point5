@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Used to retrieve user by username.
- *      ID can be passed in url ex: http://localhost:8080/0.0.1/reimbursement/getByUsername?username=Bob
+ *      ID can be passed in url ex: http://localhost:8080/0.0.1/user/getByUsername?username=Bob
  */
 @WebServlet("/user/getByUsername")
 public class UserGetByUsernameServlet extends HttpServlet {

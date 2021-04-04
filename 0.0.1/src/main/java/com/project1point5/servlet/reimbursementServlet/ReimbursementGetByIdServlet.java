@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.project1point5.model.Reimbursement;
 import com.project1point5.service.ReimbursementService;
+import com.project1point5.util.HideUsernameAndPassword;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -80,6 +81,9 @@ public class ReimbursementGetByIdServlet extends HttpServlet {
             //Call ReimbursementService to call dao and return the object
             ReimbursementService reimbursementService = new ReimbursementService();
             Reimbursement reimbursement = reimbursementService.getReimbursementById(Integer.parseInt(primaryIdValue));
+
+            //Hiding username and password
+            HideUsernameAndPassword.hideDetails(reimbursement.getResolver());
 
             //Print json of reimbursement to body
             out.print(new GsonBuilder().setPrettyPrinting().create().toJson(reimbursement));

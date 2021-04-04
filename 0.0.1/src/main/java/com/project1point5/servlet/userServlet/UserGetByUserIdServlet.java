@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Used to retrieve users by role_id.
- *      ID can be passed in url ex: http://localhost:8080/0.0.1/reimbursement/getByUserId?author=4
+ *      ID can be passed in url ex: http://localhost:8080/0.0.1/user/getByUserId?role_id=4
  */
 @WebServlet("/user/getByUserId")
 public class UserGetByUserIdServlet extends HttpServlet{
