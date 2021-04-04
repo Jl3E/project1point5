@@ -83,11 +83,10 @@ public class ReimbursementGetByIdServlet extends HttpServlet {
 
             //Print json of reimbursement to body
             out.print(new GsonBuilder().setPrettyPrinting().create().toJson(reimbursement));
-            out.flush();
         }else{
             out.write("'id' must be an integer");
-            out.flush();
         }
+        out.flush();
     }
 
 
