@@ -13,6 +13,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Deletes User from DB using HTTP Delete
+ *      Reads request body. Json must be formatted like:
+ *
+ * {
+ * "user": {
+ * "id": 1,
+ * "username": "bob",
+ * "password": "bob"
+ * }
+ * }
+ */
 @WebServlet("/user/delete")
 public class UserDeleteServlet extends HttpServlet {
 
