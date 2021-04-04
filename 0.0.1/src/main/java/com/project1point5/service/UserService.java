@@ -74,4 +74,9 @@ public class UserService {
 	public void insert(User user){
 		ud.insert(user);
 	}
+
+	public void delete(User user){
+		ud.delete(user);
+	}
+
 }
