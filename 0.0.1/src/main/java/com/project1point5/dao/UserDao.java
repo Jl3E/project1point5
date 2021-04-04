@@ -1,5 +1,8 @@
 package com.project1point5.dao;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -119,10 +122,24 @@ public class UserDao implements GenericDao <User> {
 	}
 
 	@Override
-	public void insert(User t) {
-		// TODO Auto-generated method stub
+	public void insert(User t) throws NoSuchAlgorithmException {
+		User user = t;
+		String pass = user.getPassword();
+		String full = user.getUsername() + pass + "salt";
+		//Let MessageDigest know that we want to hash using MD5
+		MessageDigest m = MessageDigest.getInstance("md5");
+		//Convert our full string to a byte array.
+		byte[] messageDigest = m.digest(full.getBytes());
+		//Convert our byte array into a signum representation of its former self.
+		BigInteger n = new BigInteger(1, messageDigest);
+		//Convert the whole array into a hexadecimal string.
+		String hash = n.toString(16);
+		while(hash.length() < 32) {
+			hash = "0" + hash;
+		}
+		user.setPassword(hash);//hashing the password
 		Transaction tr = session.beginTransaction();
-		session.persist(t);
+		session.persist(user);
 		session.flush();
 		tr.commit();
 		session.close();

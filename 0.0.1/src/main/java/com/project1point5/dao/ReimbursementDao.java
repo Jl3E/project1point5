@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import com.project1point5.model.User;
+import jdk.nashorn.internal.runtime.ECMAException;
 import org.apache.log4j.Logger;
 
 import com.project1point5.model.Reimbursement;
@@ -38,8 +39,14 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 
 	@Override
 	public List<Reimbursement> getList() {
-		Query query = session.createQuery("FROM Reimbursement");
-		List<Reimbursement> l = query.list();
+		try{
+			Query query = session.createQuery("FROM Reimbursement");
+			List<Reimbursement> l = query.list();
+			return l;
+		}catch(Exception e){
+			return null;
+		}
+
 //		List<Reimbursement> l = new ArrayList<Reimbursement>();
 //
 //
@@ -59,22 +66,20 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 //			e.printStackTrace();
 //			LOGGER.error("An attempt to get all reimbursements failed.");
 //		}
-		return l;
 	}
 
 	@Override
 	public Reimbursement getById(int id) {
-
 		try{
 			String hql = "FROM Reimbursement R WHERE R.id = :reimbursementId";
 			List<Reimbursement> r = session.createQuery(hql)
 					.setParameter("reimbursementId", id)
 					.list();
-
 			return r.get(0);
 		}catch(Exception e){
 			return null;
 		}
+
 
 //		Reimbursement r = null;
 //		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
@@ -97,10 +102,15 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 
 	@Override
 	public List<Reimbursement> getByUserId(int id) {
-		String hql = "FROM Reimbursement R WHERE R.author = :author";
-		List<Reimbursement> l = session.createQuery(hql)
-				.setParameter("author", id)
-				.list();
+		try{
+			String hql = "FROM Reimbursement R WHERE R.author = :author";
+			List<Reimbursement> l = session.createQuery(hql)
+					.setParameter("author", id)
+					.list();
+			return l;
+		}catch(Exception e){
+			return null;
+		}
 
 //		List<Reimbursement> l = new ArrayList<Reimbursement>();
 //		try(Connection c = ConnectionUtil.getInstance().getConnection()) {
@@ -120,7 +130,6 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 //			LOGGER.error("An attempt to get all reimbursements made by user ID " + id + " fron the database failed.");
 //		}
 //		System.out.println(l.toString());
-		return l;
 	}
 
 	public Reimbursement getByUsername(String username) {
@@ -153,7 +162,7 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		session.persist(r);
 		session.flush();
 		t.commit();
-//		session.close();
+		session.close();
 	}
 
 	public void updateList(int[][] i, int resolver) {//two people one that is the resolver one that is trying to get a reimb
@@ -164,23 +173,32 @@ public class ReimbursementDao implements GenericDao<Reimbursement> {
 		User reimburses = ud.getById(resolver);
 		Integer[] a = Arrays.stream(i[0]).boxed().toArray(Integer[]::new);
 		Integer[] d = Arrays.stream(i[1]).boxed().toArray(Integer[]::new);
-		for(Integer value: a){
-			Reimbursement reimbursement = getById(value);
-			session.evict(reimbursement);
-			reimbursement.setResolved(resolvedTimeStamp);
-			reimbursement.setStatus_id(1);
-			reimbursement.setResolver(reimburses);
 
-			Reimbursement mergedReimbursement = (Reimbursement) session.merge(reimbursement);
+		for(Integer value: a){
+			try{
+				Reimbursement reimbursement = getById(value);
+				session.evict(reimbursement);
+				reimbursement.setResolved(resolvedTimeStamp);
+				reimbursement.setStatus_id(1);
+				reimbursement.setResolver(reimburses);
+
+				Reimbursement mergedReimbursement = (Reimbursement) session.merge(reimbursement);
+			}catch(Exception e){
+				continue;
+			}
 		}
 		for(Integer value: d){
-			Reimbursement reimbursement = getById(value);
-			session.evict(reimbursement);
-			reimbursement.setResolved(resolvedTimeStamp);
-			reimbursement.setStatus_id(2);
-			reimbursement.setResolver(reimburses);
+			try{
+				Reimbursement reimbursement = getById(value);
+				session.evict(reimbursement);
+				reimbursement.setResolved(resolvedTimeStamp);
+				reimbursement.setStatus_id(2);
+				reimbursement.setResolver(reimburses);
 
-			Reimbursement mergedReimbursement = (Reimbursement) session.merge(reimbursement);
+				Reimbursement mergedReimbursement = (Reimbursement) session.merge(reimbursement);
+			}catch(Exception e){
+				continue;
+			}
 		}
 		session.flush();
 		t.commit();

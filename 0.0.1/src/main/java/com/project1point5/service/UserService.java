@@ -71,7 +71,7 @@ public class UserService {
 		return null;
 	}
 
-	public void insert(User user){
+	public void insert(User user) throws NoSuchAlgorithmException {
 		ud.insert(user);
 	}
 
