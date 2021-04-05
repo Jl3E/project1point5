@@ -31,10 +31,10 @@ public class UserDao implements GenericDao <User> {
 	SessionFactory factory = new Configuration().configure().buildSessionFactory();
 	Session session = factory.openSession();
 
-	private User objectConstructor(ResultSet rs) throws SQLException {
-		return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-				rs.getString(6), rs.getInt(7));
-	}
+//	private User objectConstructor(ResultSet rs) throws SQLException {
+//		return new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+//				rs.getString(6), rs.getInt(7));
+//	}
 
 	@Override
 	public List<User> getList() {

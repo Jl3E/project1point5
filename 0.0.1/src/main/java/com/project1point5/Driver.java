@@ -51,7 +51,7 @@ public class Driver {
 //        rd.updateList(values, 1);
 //--------------------------------------------UserDao-------------------------------------------------------------------
         UserDao us = new UserDao();// have to add theses first
-        us.insert(u4);
+//        us.insert(u4);
 //        us.insert(u1);
 //        List<User> list = us.getList();
 //        System.out.println(list.get(0).getUsername());
