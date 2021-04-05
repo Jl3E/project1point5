@@ -23,8 +23,7 @@ public class UserDaoTest {
 
     @Test
     public void getListTest() {
-        Query query = session.createQuery("FROM User");
-        List<User> l = query.list();
+        List<User> l = ud.getList();
         int actual = l.get(0).getUser_id();
         Assert.assertEquals(1,actual);
     }

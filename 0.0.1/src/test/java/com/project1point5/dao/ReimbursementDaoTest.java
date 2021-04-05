@@ -26,10 +26,9 @@ public class ReimbursementDaoTest {
 
     @Test
     public void getListTest() {
-        Query query = session.createQuery("FROM Reimbursement");
-        List<Reimbursement> l = query.list();
+        List<Reimbursement> l =rd.getList();
         int actual = l.get(0).getId();
-        Assert.assertEquals(1,actual);
+        Assert.assertEquals(4,actual);
     }
 
     @Test
