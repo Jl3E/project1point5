@@ -55,29 +55,15 @@ public class UserDaoTest {
     @Test
     public void getByIdTest() {
         int id = u.getUser_id();
-        String hql = "FROM User u WHERE u.id = :userId";
-        List<User> u = session.createQuery(hql)
-                .setParameter("userId", id)
-                .list();
-        User user = new User();
-        for(User u2: u){
-            if(u2.getUser_id() == 5){
-                user = u2;
-            }else{
-                continue;
-            }
-        }
-        String actual = user.getUsername();
-        Assert.assertEquals("some guy",actual);
+        User user = ud.getById(id);
+        String actual = user.getFirstname();
+        Assert.assertEquals("some",actual);
     }
 
     @Test
     public void getByUserIdTest(){
         int id = u.getRole_id();
-        String hql = "FROM User u WHERE u.role_id = :id";
-        List<User> ul = session.createQuery(hql)
-                .setParameter("id", id)
-                .list();
+        List<User> ul = ud.getByUserId(id);
         User user;
         for(User u2: ul){
             if(u2.getUsername().equals("some guy")){
@@ -94,11 +80,7 @@ public class UserDaoTest {
     @Test
     public void getByUserNameTest(){
         String username = "bob";
-        String hql = "FROM User u WHERE u.username = :username";
-        List<User> u = session.createQuery(hql)
-                .setParameter("username", username)
-                .list();
-        String actual = u.get(0).getUsername();
+        String actual = ud.getByUsername(username).getUsername();
         System.out.println(actual);
 
         Assert.assertEquals("bob",actual);
