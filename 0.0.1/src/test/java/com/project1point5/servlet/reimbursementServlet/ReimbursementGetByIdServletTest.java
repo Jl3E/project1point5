@@ -1,73 +1,83 @@
 package com.project1point5.servlet.reimbursementServlet;
 
-import com.project1point5.model.Reimbursement;
-import com.project1point5.model.User;
 import com.project1point5.service.ReimbursementService;
-import com.project1point5.util.HideUsernameAndPassword;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-class ReimbursementGetListServletTest extends Mockito {
+class ReimbursementGetByIdServletTest {
 
     HttpServletRequest request = mock(HttpServletRequest.class);
     HttpServletResponse response = mock(HttpServletResponse.class);
     ReimbursementService reimbursementService = mock(ReimbursementService.class);
 
-
     @Test
-    public void testDoGet() throws Exception{
-        when(reimbursementService.fetchAllReimbursements()).thenReturn(null);
-
+    void doGet() throws IOException, ServletException {
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);
 
-        response.getWriter();
+        when(request.getParameter("id")).thenReturn("1");
 
-        new ReimbursementGetListServlet().doGet(request,response);
-//        verify(reimbursementService, atLeastOnce());
-        assertFalse(stringWriter.toString().isEmpty());
+        new ReimbursementGetByIdServlet().doGet(request, response);
+        verify(request, atLeastOnce()).getParameter("id");
     }
 
     @Test
-    public void testDoPost() throws Exception{
+    void doGet2() throws IOException, ServletException {
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);
 
-        new ReimbursementGetListServlet().doPost(request, response);
-        assertFalse(stringWriter.toString().isEmpty());
+        when(request.getParameter("id")).thenReturn(null);
+
+        new ReimbursementGetByIdServlet().doGet(request, response);
+        verify(request, atLeastOnce()).getParameter("id");
     }
 
     @Test
-    public void testDoPut() throws Exception{
+    void doPost() throws IOException, ServletException {
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);
 
-        new ReimbursementGetListServlet().doPut(request, response);
+        new ReimbursementGetByIdServlet().doPost(request, response);
         assertFalse(stringWriter.toString().isEmpty());
     }
 
     @Test
-    public void testDoDelete() throws Exception{
+    void doPut() throws IOException, ServletException {
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);
 
-        new ReimbursementGetListServlet().doDelete(request, response);
+        new ReimbursementGetByIdServlet().doPut(request, response);
         assertFalse(stringWriter.toString().isEmpty());
     }
 
+    @Test
+    void doDelete() throws IOException, ServletException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
 
+        new ReimbursementGetByIdServlet().doDelete(request, response);
+        assertFalse(stringWriter.toString().isEmpty());
+    }
+
+    @Test
+    void isInteger(){
+        ReimbursementGetByIdServlet reimbursementGetByIdServlet = new ReimbursementGetByIdServlet();
+        assertEquals(reimbursementGetByIdServlet.isInteger("2"), true);
+        assertFalse(reimbursementGetByIdServlet.isInteger("Test"));
+    }
 }
