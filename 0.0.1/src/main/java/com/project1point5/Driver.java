@@ -25,6 +25,7 @@ public class Driver {
         User u = new User(1,"bob","bobPass","b","bob","bob@mail.com",1);
         User u1 = new User(2,"jill","jillPass","jill","hands","jill@mail.com",3);
         User u2 = new User(3,"bill","billPass","bill","grands","bill@mail.com",2);
+        User u4 = new User(50,"joe","joePass","joe","joe","joe@gmailcom",3);
         Date date = new Date();
         Timestamp timestamp2 = new Timestamp(date.getTime());
         Reimbursement r = new Reimbursement(1,50, timestamp2,null,"something",1,u,0,1);//at servlet none can be null
@@ -50,7 +51,7 @@ public class Driver {
 //        rd.updateList(values, 1);
 //--------------------------------------------UserDao-------------------------------------------------------------------
         UserDao us = new UserDao();// have to add theses first
-//        us.insert(u);
+        us.insert(u4);
 //        us.insert(u1);
 //        List<User> list = us.getList();
 //        System.out.println(list.get(0).getUsername());
