@@ -117,7 +117,7 @@ public class ReimbursementInsertServlet extends HttpServlet {
         Timestamp resolved = Timestamp.valueOf(r);
 
         UserDao userDao = new UserDao();
-        userDao.getById(resolver);
+//        userDao.getById(resolver);
 
         return new Reimbursement(id, amount, submitted, resolved, description, author, userDao.getById(resolver), status_id, type_id);
     }
