@@ -36,11 +36,16 @@ connect to Tomcat and configure to your database
 
 By using our endpoints such as:
 /user which will show you all of these:
-                                      /user/delete
-                                      /user/getById
-                                      /user/getByUserId
-                                      /user/getList
-                                      /user/insert
+/user/delete
+
+/user/getById
+
+/user/getByUserId
+
+/user/getList
+
+/user/insert
+
 Similarly by hitting the endpoint /reimbursement you have the same funcitonality as above.
 
 ## Contributors
